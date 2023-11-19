@@ -14,8 +14,8 @@ return new class extends Migration {
       $table->id();
       $table->unsignedBigInteger('club_1');
       $table->unsignedBigInteger('club_2');
-      $table->integer('score_1');
-      $table->integer('score_2');
+      $table->string('score_1');
+      $table->string('score_2');
       $table->timestamps();
       $table->softDeletes();
 

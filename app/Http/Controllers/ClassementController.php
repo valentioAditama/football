@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\score;
-use App\Http\Requests\StorescoreRequest;
-use App\Http\Requests\UpdatescoreRequest;
+use App\Models\classement;
+use App\Http\Requests\StoreclassementRequest;
+use App\Http\Requests\UpdateclassementRequest;
 
-class ScoreController extends Controller
+class ClassementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ScoreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorescoreRequest $request)
+    public function store(StoreclassementRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ScoreController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(score $score)
+    public function show(classement $classement)
     {
         //
     }
@@ -43,7 +43,7 @@ class ScoreController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(score $score)
+    public function edit(classement $classement)
     {
         //
     }
@@ -51,7 +51,7 @@ class ScoreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatescoreRequest $request, score $score)
+    public function update(UpdateclassementRequest $request, classement $classement)
     {
         //
     }
@@ -59,7 +59,7 @@ class ScoreController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(score $score)
+    public function destroy(classement $classement)
     {
         //
     }

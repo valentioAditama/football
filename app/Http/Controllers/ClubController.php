@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\classement;
 use App\Models\club;
 use App\Http\Requests\StoreclubRequest;
 use App\Http\Requests\UpdateclubRequest;
@@ -31,7 +32,11 @@ class ClubController extends Controller
   public function store(StoreclubRequest $request)
   {
     try {
-      club::create($request->all());
+      $data = club::create($request->all());
+      classement::create([
+        'id_club' => $data->id
+      ]);
+
       return redirect()->back()->with(['success' => 'Successfully']);
     } catch (\Error $error) {
       return redirect()->back()->with(['success' => $error->getMessage()]);
@@ -60,8 +65,7 @@ class ClubController extends Controller
   public function update(UpdateclubRequest $request, club $club)
   {
     try {
-      $data = club::where('id', '=', $club)->first();
-      $data->update($request->all());
+      $club->update($request->all());
       return redirect()->back()->with(['success' => 'Successfully']);
     } catch (\Error $error) {
       return redirect()->back()->with(['success' => $error->getMessage()]);
@@ -75,10 +79,10 @@ class ClubController extends Controller
   public function destroy(club $club)
   {
     try {
-      $data = club::where('id', '=', $club);
-      $data->delete();
+      $club->delete();
+      return redirect()->back()->with(['success' => 'Successfully']);
     } catch (\Error $error) {
-      return redirect()->back()->with(['success' => $error->getMessage()]);
+      return redirect()->back()->with(['error' => $error->getMessage()]);
     }
   }
 }

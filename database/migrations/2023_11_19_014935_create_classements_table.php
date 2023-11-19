@@ -10,22 +10,20 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('scores', function (Blueprint $table) {
+    Schema::create('classements', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('id_club');
-      $table->tinyInteger('play');
-      $table->tinyInteger('win');
-      $table->tinyInteger('draw');
-      $table->tinyInteger('lose');
-      $table->tinyInteger('goal_win');
-      $table->tinyInteger('goal_lose');
-      $table->tinyInteger('point');
+      $table->tinyInteger('play')->default(0);
+      $table->tinyInteger('win')->default(0);
+      $table->tinyInteger('draw')->default(0);
+      $table->tinyInteger('lose')->default(0);
+      $table->tinyInteger('goal_win')->default(0);
+      $table->tinyInteger('goal_lose')->default(0);
       $table->timestamps();
       $table->softDeletes();
 
       $table->foreign('id_club')->references('id')->on('clubs')->onDelete('cascade');
     });
-
   }
 
   /**
@@ -33,6 +31,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('scores');
+    Schema::dropIfExists('classements');
   }
 };

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class MatchGame extends Model
+class classement extends Model
 {
   use HasFactory, SoftDeletes;
 
-  protected $table = 'match_games';
-  protected $fillable = ['id', 'club_1', 'club_2', 'score_1', 'score_2'];
+  protected $table = 'classements';
+  protected $fillable = ['id', 'id_club', 'play', 'win', 'draw', 'lose', 'goal_win', 'goal_lose'];
   protected $dates = ['deleted_at'];
 }

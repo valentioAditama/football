@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\MatchGameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ Route::post('/club', [ClubController::class, 'store'])->name('club.store');
 Route::put('/club/{club}', [ClubController::class, 'update'])->name('club.update');
 Route::delete('/club/{club}', [ClubController::class, 'destroy'])->name('club.delete');
 
-Route::get('/score', [ClubController::class, 'index'])->name('score.index');
-Route::post('/score', [ClubController::class, 'store'])->name('score.store');
-Route::put('/score/{score}', [ClubController::class, 'update'])->name('score.update');
-Route::delete('/score/{score}', [ClubController::class, 'destroy'])->name('score.delete');
+Route::get('/score', [MatchGameController::class, 'index'])->name('score.index');
+Route::post('/score', [MatchGameController::class, 'store'])->name('score.store');
+Route::put('/score/{score}', [MatchGameController::class, 'update'])->name('score.update');
+Route::delete('/score/{score}', [MatchGameController::class, 'destroy'])->name('score.delete');
