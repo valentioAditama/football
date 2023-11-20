@@ -19,6 +19,7 @@ return new class extends Migration {
       $table->tinyInteger('lose')->default(0);
       $table->tinyInteger('goal_win')->default(0);
       $table->tinyInteger('goal_lose')->default(0);
+      $table->tinyInteger('point')->default(0);
       $table->timestamps();
       $table->softDeletes();
 

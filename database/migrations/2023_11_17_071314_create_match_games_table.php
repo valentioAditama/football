@@ -14,14 +14,15 @@ return new class extends Migration {
       $table->id();
       $table->unsignedBigInteger('club_1');
       $table->unsignedBigInteger('club_2');
-      $table->string('score_1');
-      $table->string('score_2');
+      $table->tinyInteger('score_1');
+      $table->tinyInteger('score_2');
       $table->timestamps();
       $table->softDeletes();
 
       $table->foreign('club_1')->references('id')->on('clubs')->onDelete('cascade');
       $table->foreign('club_2')->references('id')->on('clubs')->onDelete('cascade');
     });
+
   }
 
   /**

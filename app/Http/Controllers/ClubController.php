@@ -32,10 +32,7 @@ class ClubController extends Controller
   public function store(StoreclubRequest $request)
   {
     try {
-      $data = club::create($request->all());
-      classement::create([
-        'id_club' => $data->id
-      ]);
+      club::create($request->all());
 
       return redirect()->back()->with(['success' => 'Successfully']);
     } catch (\Error $error) {

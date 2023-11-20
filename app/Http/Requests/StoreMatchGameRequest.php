@@ -22,10 +22,10 @@ class StoreMatchGameRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'club_1' => 'required|string',
-      'club_2' => 'required|string',
-      'score_1' => 'required|string',
-      'score_2' => 'required|string'
+      'club_1' => 'required|integer',
+      'club_2' => 'required|integer',
+      'score_1' => 'required|integer',
+      'score_2' => 'required|integer'
     ];
   }
 }

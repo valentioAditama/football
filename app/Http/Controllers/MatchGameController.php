@@ -7,6 +7,7 @@ use App\Models\club;
 use App\Models\MatchGame;
 use App\Http\Requests\StoreMatchGameRequest;
 use App\Http\Requests\UpdateMatchGameRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
 class MatchGameController extends Controller
@@ -16,7 +17,11 @@ class MatchGameController extends Controller
    */
   public function index()
   {
-    $data = MatchGame::select('id', 'club_1', 'club_2', 'score_1', 'score_2')->paginate(15);
+    $data = MatchGame::select('match_games.id', 'match_games.score_1', 'match_games.score_2', 'club1.name as club_1', 'club2.name as club_2')
+      ->join('clubs as club1', 'match_games.club_1', '=', 'club1.id')
+      ->join('clubs as club2', 'match_games.club_2', '=', 'club2.id')
+      ->paginate();
+
     $dataClub = club::select('id', 'name', 'city')->paginate(15);
 
     return view('score', compact('data', 'dataClub'));
@@ -40,41 +45,70 @@ class MatchGameController extends Controller
         return redirect()->back()->with(['error' => 'Tidak boleh ada pertandingan yang sama']);
       }
 
-      // Logika jika skor sama
-      if ($request->score_1 == $request->score_2){
-        $pointsTeam1 = 1;
-        $pointsTeam2 = 1;
-      } else if ($request->score_1 > $request->score_2){
-        $pointsTeam1 = 3;
-        $pointsTeam2 = 0;
+      $data = club::find($request->club_1);
+      classement::create([
+        'id_club' => $data->id
+      ]);
+
+      $data = club::find($request->club_2);
+      classement::create([
+        'id_club' => $data->id
+      ]);
+
+      if ($request->score_1 == $request->score_2) {
+        DB::table('classements')->where('id_club', '=', $request->club_1)->update([
+          'play' => 2,
+          'draw' => 1,
+          'goal_win' => $request->score_1,
+          'goal_lose' => $request->score_2,
+          'point' => 1,
+        ]);
+
+        DB::table('classements')->where('id_club', '=', $request->club_2)->update([
+          'play' => 2,
+          'draw' => 1,
+          'goal_win' => $request->score_2,
+          'goal_lose' => $request->score_1,
+          'point' => 1,
+        ]);
+
+      } else if ($request->score_1 > $request->score_2) {
+        classement::where('id_club', $request->club_1)->update([
+          'play' => 2,
+          'win' => 1,
+          'goal_win' => $request->score_1,
+          'goal_lose' => $request->score_2,
+          'point' => 3
+        ]);
+
+        classement::where('id_club', $request->club_2)->update([
+          'play' => 2,
+          'lose' => 1,
+          'goal_win' => $request->score_2,
+          'goal_lose' => $request->score_1,
+          'point' => 0,
+        ]);
+
       } else {
-        $pointsTeam1 = 0;
-        $pointsTeam2 = 3;
+        classement::where('id_club', $request->club_2)->update([
+          'play' => 2,
+          'win' => 1,
+          'goal_win' => $request->score_2,
+          'goal_lose' => $request->score_1,
+          'point' => 3
+        ]);
+
+        classement::where('id_club', $request->club_1)->update([
+          'play' => 2,
+          'lose' => 1,
+          'goal_win' => $request->score_1,
+          'goal_lose' => $request->score_2,
+          'point' => 0,
+        ]);
       }
 
-      // Mendapatkan entri klasemen untuk Club A
-      $klasemenClubA = Classement::where('id_club', $request->club_1)->first();
-
-      // Memperbarui nilai-nilai klasemen Club A sesuai hasil pertandingan
-      $klasemenClubA->play += 1;
-      $klasemenClubA->win += $pointsTeam1;
-      $klasemenClubA->draw += ($request->score_1 == $request->score_2) ? 1 : 0;
-      $klasemenClubA->lose += $pointsTeam2;
-      $klasemenClubA->goal_win += $request->score_1;
-      $klasemenClubA->goal_lose += $request->score_2;
-      $klasemenClubA->save();
-
-      // Mendapatkan entri klasemen untuk Club B
-      $klasemenClubB = Classement::where('id_club', $request->club_2)->first();
-
-      // Memperbarui nilai-nilai klasemen Club B sesuai hasil pertandingan
-      $klasemenClubB->play += 1;
-      $klasemenClubB->win += $pointsTeam2;
-      $klasemenClubB->draw += ($request->score_1 == $request->score_2) ? 1 : 0;
-      $klasemenClubB->lose += $pointsTeam1;
-      $klasemenClubB->goal_win += $request->score_2;
-      $klasemenClubB->goal_lose += $request->score_1;
-      $klasemenClubB->save();
+      MatchGame::create($request->all());
+      return redirect()->back()->with(['success' => 'Successfully']);
 
     } catch (\Error $error) {
       return redirect()->back()->with(['error' => $error->getMessage()]);

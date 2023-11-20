@@ -44,13 +44,25 @@
                   {{ $datas->name }}
                 </th>
                 <td class="px-6 py-4">
-                  Silver
+                  {{ $datas->play }}
                 </td>
                 <td class="px-6 py-4">
-                  Laptop
+                  {{ $datas->win }}
                 </td>
                 <td class="px-6 py-4">
-                  $2999
+                  {{ $datas->draw }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ $datas->lose }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ $datas->goal_win }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ $datas->goal_lose }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ $datas->point }}
                 </td>
               </tr>
             @endforeach

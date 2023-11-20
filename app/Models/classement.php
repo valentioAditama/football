@@ -11,6 +11,6 @@ class classement extends Model
   use HasFactory, SoftDeletes;
 
   protected $table = 'classements';
-  protected $fillable = ['id', 'id_club', 'play', 'win', 'draw', 'lose', 'goal_win', 'goal_lose'];
+  protected $fillable = ['id', 'id_club', 'play', 'win', 'draw', 'lose', 'goal_win', 'goal_lose', 'point'];
   protected $dates = ['deleted_at'];
 }
